@@ -1,0 +1,10 @@
+<% @posts.each do |id, title, content| %>
+    <li>
+    <a href="/posts/<%=id%>">
+    <h2><%=title%></h2>
+    </a>
+        <p><%=content%></p>
+    </li>
+<%end%>
+
+<a href="/home">Home</a>

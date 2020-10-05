@@ -1,0 +1,7 @@
+<% user = User.find_by(:email => session[:email]) %>
+  <% all_posts = user.blog_posts %>
+  <a href="/posts/<%=params[:id]%>/edit">
+  <h1><%= all_posts.where(:id => params[:id]).pluck(:title).join(', ')%></h1>
+  </a>
+  <p><%=all_posts.where(:id => params[:id]).pluck(:content).join(', ')%></p>
+  

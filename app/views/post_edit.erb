@@ -1,0 +1,22 @@
+<%user = User.find_by(:email => session[:email])
+    post = user.blog_posts
+    title = user.blog_posts.where(:id => params[:id]).pluck(:title).join(', ')
+    id = user.blog_posts.where(:id => params[:id]).pluck(:id).join(', ')
+    content = user.blog_posts.where(:id => params[:id]).pluck(:content).join(', ')%>
+    <% if title.empty? == true %>
+        <h3> <%= "Something went wrong. Go back to blog posts" %> </h3>
+    <% else %>
+    
+        <form action="/posts/<%=id%>" method="post">
+            <input type="hidden" name="_method" value="PATCH">
+            <input type="text" name="title"  value="<%= title%>">
+            <textarea name="content"rows="20" cols="65"><%= content %></textarea>
+            <input type="submit">
+        </form>
+   
+        <form action="/posts/<%= id %>" method="post">
+            <input type="hidden" name="_method" value="DELETE">
+            <input type="submit" value="DELETE">
+        </form>
+
+    <% end %>
