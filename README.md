@@ -8,7 +8,7 @@ You can publish posts from any web browser at anytime with this app. You can use
 
 ## Installation
 
-1. Clone this program's repo.
+1. Fork and clone this project's repository.
 
 2. Execute:
 
