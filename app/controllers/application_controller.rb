@@ -29,6 +29,11 @@ class ApplicationController < Sinatra::Base
       !!session[:email]
     end
 
+    def authorized_user?(post)
+      post.user == current_user
+    end
+
+
   end
 
 end

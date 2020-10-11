@@ -9,14 +9,14 @@ class BlogPostController < ApplicationController
     end
 
     post '/saveblogpost' do
-        @post = BlogPost.new
-        @post.title = params[:title]
-        @post.content = params[:content]
-        @post.user_id = User.find_by(:email => session[:email]).id
-        if @post.save
-            redirect "/posts/#{@post.id}"
+        post = BlogPost.new
+        post.title = params[:title]
+        post.content = params[:content]
+        post.user_id = User.find_by(:email => session[:email]).id
+        if post.save
+            redirect "/posts/#{post.id}"
         else
-            "yikessss"
+            erb :error_page
         end
     end
 
@@ -29,15 +29,15 @@ class BlogPostController < ApplicationController
     end
 
     patch '/posts/:id' do
+        authorized_user? 
         @post= BlogPost.find_by(id: params[:id])
         @post.title = params[:title]
         @post.content = params[:content]
-        @post.user_id = User.find_by(:email => session[:email]).id
             
             if @post.save
                 redirect "/posts/#{@post.id}"
             else
-                "Yikesss"
+                erb :error_page
             end
     end
 

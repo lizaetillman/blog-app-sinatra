@@ -6,7 +6,7 @@ class UserController < ApplicationController
 
     post '/login' do
         login(params[:email], params[:password])
-        erb :home
+        redirect :home
     end
 
     get '/signup' do
@@ -14,16 +14,22 @@ class UserController < ApplicationController
     end
 
     post '/signup' do
-        @user = User.new
-        @user.email = params[:email]
-        @user.password = params[:password]
+        @user = User.new(
+            email: params[:email],
+            password: params[:password]
+        )
         @user.save
-        erb :home
+        session[:user_id] = @user.id
+        if @user.id == nil
+            erb :error_page
+        else
+            redirect "/users/#{@user.id}"
+        end
     end
 
     get '/logout' do
         logout!
-        redirect '/login'
+        redirect '/signup' 
     end
 
     get '/home' do

@@ -4,4 +4,10 @@
   <h1><%= all_posts.where(:id => params[:id]).pluck(:title).join(', ')%></h1>
   </a>
   <p><%=all_posts.where(:id => params[:id]).pluck(:content).join(', ')%></p>
+
+  <br>
+
+  <div id="nav">
+    <a href="/home">Home</a> |  <a href="/logout">Log Out</a>  |  <a href="/posts">All Post</a>  |  <a href="/posts/new">Create New Post</a>
+</div>
   
