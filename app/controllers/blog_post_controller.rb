@@ -13,11 +13,8 @@ class BlogPostController < ApplicationController
         post.title = params[:title]
         post.content = params[:content]
         post.user_id = User.find_by(:email => session[:email]).id
-        if post.save
+        post.save
             redirect "/posts/#{post.id}"
-        else
-            erb :error_page
-        end
     end
 
     get '/posts/:id' do
@@ -29,7 +26,6 @@ class BlogPostController < ApplicationController
     end
 
     patch '/posts/:id' do
-        authorized_user? 
         @post= BlogPost.find_by(id: params[:id])
         @post.title = params[:title]
         @post.content = params[:content]
@@ -44,14 +40,15 @@ class BlogPostController < ApplicationController
     delete "/posts/:id" do
           blog_post =  BlogPost.find(params[:id])
           blog_post.destroy
-          redirect "/home"
+          redirect "/posts" 
     end
 
     get '/posts' do
         @user = User.find_by(:email=> session[:email])
+        
         @posts_array = @user.blog_posts
         @posts = @user.blog_posts.pluck(:id, :title, :content)
-        erb :all_posts
+            erb :all_posts
     end
 
 end

@@ -19,11 +19,11 @@ class UserController < ApplicationController
             password: params[:password]
         )
         @user.save
-        session[:user_id] = @user.id
-        if @user.id == nil
+        session[:email] = @user.email
+        if !@user.id
             erb :error_page
         else
-            redirect "/users/#{@user.id}"
+            redirect '/home'
         end
     end
 

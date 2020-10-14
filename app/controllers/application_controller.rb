@@ -29,8 +29,12 @@ class ApplicationController < Sinatra::Base
       !!session[:email]
     end
 
-    def authorized_user?(post)
-      post.user == current_user
+    def authorized_user
+      @creator_of_post = BlogPost.find([params][:id]).user_id
+      #post.user == current_user
+      if current_user.id != @creator_of_post
+        redirect '/error_page'
+      end
     end
 
 
