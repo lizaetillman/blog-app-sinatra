@@ -1,8 +1,8 @@
-<h1>My Friends' Posts!</h1>
+<h1>My Posts</h1>
 
 <% @posts.each do |id, title, content| %>
     <li>
-    <a href="/friends-posts/<%= id%>">
+    <a href="/posts/<%= id%>">
     <h2><%=title%></h2>
     </a>
         <p><%=content%></p>

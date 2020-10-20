@@ -1,20 +1,19 @@
-<%user = User.find_by(:email => session[:email])
-    post = user.blog_posts
-    title = user.blog_posts.where(:id => params[:id]).pluck(:title).join(', ')
-    id = user.blog_posts.where(:id => params[:id]).pluck(:id).join(', ')
-    content = user.blog_posts.where(:id => params[:id]).pluck(:content).join(', ')%>
-    <% if title.empty? == true %>
+ <h1><%= @post.title %></h1>
+  <p><%= @post.content %></p>
+
+
+    <% if @post.title.empty? == true %>
         <h3> <%= "Something went wrong. Go back to blog posts" %> </h3>
     <% else %>
     
-        <form action="/posts/<%=id%>" method="post">
+        <form action="/posts/<%= @post.id %>" method="post">
             <input type="hidden" name="_method" value="PATCH">
-            <input type="text" name="title"  value="<%= title%>"><br><br>
-            <textarea name="content"rows="20" cols="65"><%= content %></textarea><br><br>
+            <input type="text" name="title"  value="<%= @post.title %>"><br><br>
+            <textarea name="content"rows="20" cols="65"><%= @post.content %></textarea><br><br>
             <input type="submit"><br><br>
         </form>
    
-        <form action="/posts/<%= id %>" method="post">
+        <form action="/posts/<%= @post.id %>" method="post">
             <input type="hidden" name="_method" value="DELETE">
             <input type="submit" value="Delete Post!">
         </form>
@@ -23,5 +22,5 @@
 
 <br><br>
 <div id="nav">
-    <a href="/home">Home</a> |  <a href="/logout">Log Out</a>  |  <a href="/posts">All Post</a>  |  <a href="/posts/new">Create New Post</a>
+    <a href="/home">Home</a> |  <a href="/logout">Log Out</a>  |  <a href="/posts">All Your Post</a>  |  <a href="/posts/new">Create New Post</a>  |  <a href="/friends-posts">See Friends' Posts</a>
 </div>

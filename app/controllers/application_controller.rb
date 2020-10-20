@@ -9,6 +9,9 @@ class ApplicationController < Sinatra::Base
     set :session_secret, "blog_post_app"
   end
 
+  get '/error_page' do
+    erb :error_page
+  end
 
   helpers do
 
@@ -29,8 +32,12 @@ class ApplicationController < Sinatra::Base
       !!session[:email]
     end
 
-    def authorized_user
-      @creator_of_post = BlogPost.find([params][:id]).user_id
+    def current_user
+      User.find_by(:email => session[:email])
+    end
+      
+      def authorized_user
+      @creator_of_post = BlogPost.find(params[:id]).user_id
       #post.user == current_user
       if current_user.id != @creator_of_post
         redirect '/error_page'
