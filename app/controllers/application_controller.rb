@@ -39,16 +39,19 @@ class ApplicationController < Sinatra::Base
     end
 
     def current_user
-      User.find_by(:email => session[:email])
+      @user ||= User.find_by(:email => session[:email])
     end
       
-      def authorized_user
-      creator_of_post = BlogPost.find(params[:id]).user_id
-      
-      if current_user.id != creator_of_post
+    def authorized_user(record)
+      if !owner?(record)
         redirect '/error_page'
       end
     end
+
+    def owner?(record)
+      current_user == record.user
+    end
+
 
 
   end

@@ -6,4 +6,8 @@ class User < ActiveRecord::Base
     # AR method "authenticate" checks against bcrypt to check password - see UserTable migration
 
     has_many :blog_posts
+
+    def friends_posts
+        BlogPost.where("user_id != ?", self.id)
+    end
 end 

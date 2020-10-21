@@ -2,7 +2,7 @@ class BlogPostController < ApplicationController
 
     get '/posts/new' do
         redirect_if_not_logged_in
-            erb :"post_new"
+        erb :"post_new"
     end
 
     post '/saveblogpost' do
@@ -16,25 +16,21 @@ class BlogPostController < ApplicationController
     end
 
     get '/posts/:id' do
-        @current_user = current_user.id
-        @creator_of_post = BlogPost.find(params[:id]).user_id
-        @post = BlogPost.find_by(id: params[:id])
+        set_post
         erb :post
     end
 
     get '/posts/:id/edit' do
-        authorized_user
-        @post = BlogPost.find_by(id: params[:id])
+        set_post
+        authorized_user(@post)
         erb :post_edit
     end
 
     patch '/posts/:id' do
-        authorized_user
-        @post = BlogPost.find_by(id: params[:id])
-        @post.title = params[:title]
-        @post.content = params[:content]
-            
-            if @post.save
+        set_post
+        authorized_user(@post)
+        params.delete("_method")
+        if @post.update(params)
                 redirect "/posts/#{@post.id}"
             else
                 erb :error_page
@@ -42,34 +38,31 @@ class BlogPostController < ApplicationController
     end
 
     delete "/posts/:id" do
-        authorized_user
-        blog_post = BlogPost.find(params[:id])
-        blog_post.destroy
-          redirect "/posts" 
+        set_post
+        authorized_user(@post)
+        @post.destroy
+        redirect "/posts" 
     end
 
     get '/friends-posts' do
-        @user = current_user
-        
-        @posts_array = BlogPost.all
-        @posts = @posts_array.pluck(:id, :title, :content)
-            erb :all_posts
+        @posts = current_user.friends_posts.pluck(:id, :title, :content)
+        erb :all_posts
     end
 
     get '/friends-posts/:id' do
-        @current_user = current_user.id
-        @creator_of_post = BlogPost.find(params[:id]).user_id
-        
-        @post = BlogPost.find_by(id: params[:id])
+        set_post
         erb :post
     end
 
     get '/posts' do
-        @user = User.find_by(:email=> session[:email])
-        
-        @posts_array = @user.blog_posts
-        @posts = @user.blog_posts.pluck(:id, :title, :content)
-            erb :user_posts
+        @posts = current_user.blog_posts.pluck(:id, :title, :content)
+        erb :user_posts
+    end
+
+    private 
+
+    def set_post 
+        @post = BlogPost.find_by(id: params[:id])
     end
 
 end

@@ -1,4 +1,4 @@
-  <% if @current_user == @creator_of_post %>
+  <% if owner?(@post) %>
     <a href="/posts/<%=params[:id]%>/edit"> Edit Post </a>
   <% end %>
 
