@@ -1,17 +1,12 @@
 class BlogPostController < ApplicationController
 
     get '/posts/new' do
-        if !logged_in?
-            redirect "/login"
-          else
+        redirect_if_not_logged_in
             erb :"post_new"
-        end
     end
 
     post '/saveblogpost' do
-        post = BlogPost.new
-        post.title = params[:title]
-        post.content = params[:content]
+        post = BlogPost.new(title: params[:title], content: params[:content])
         post.user = current_user
         if post.save
             redirect "/posts/#{post.id}"
@@ -62,7 +57,6 @@ class BlogPostController < ApplicationController
     get '/friends-posts/:id' do
         @post = BlogPost.find_by(id: params[:id])
         erb :friends_posts
-
     end
 
     get '/posts' do

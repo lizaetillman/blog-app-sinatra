@@ -24,6 +24,12 @@ class ApplicationController < Sinatra::Base
       end
     end
 
+    def redirect_if_not_logged_in
+      if !logged_in?
+        redirect '/login'
+      end
+    end
+
     def logout!
       session.clear
     end
@@ -37,9 +43,9 @@ class ApplicationController < Sinatra::Base
     end
       
       def authorized_user
-      @creator_of_post = BlogPost.find(params[:id]).user_id
-      #post.user == current_user
-      if current_user.id != @creator_of_post
+      creator_of_post = BlogPost.find(params[:id]).user_id
+      
+      if current_user.id != creator_of_post
         redirect '/error_page'
       end
     end
