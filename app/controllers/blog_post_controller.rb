@@ -16,6 +16,8 @@ class BlogPostController < ApplicationController
     end
 
     get '/posts/:id' do
+        @current_user = current_user.id
+        @creator_of_post = BlogPost.find(params[:id]).user_id
         @post = BlogPost.find_by(id: params[:id])
         erb :post
     end
@@ -55,8 +57,11 @@ class BlogPostController < ApplicationController
     end
 
     get '/friends-posts/:id' do
+        @current_user = current_user.id
+        @creator_of_post = BlogPost.find(params[:id]).user_id
+        
         @post = BlogPost.find_by(id: params[:id])
-        erb :friends_posts
+        erb :post
     end
 
     get '/posts' do

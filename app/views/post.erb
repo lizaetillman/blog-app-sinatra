@@ -1,4 +1,6 @@
-  <a href="/posts/<%=params[:id]%>/edit"> Edit Post </a>
+  <% if @current_user == @creator_of_post %>
+    <a href="/posts/<%=params[:id]%>/edit"> Edit Post </a>
+  <% end %>
 
   <h1><%= @post.title %></h1>
   <p><%= @post.content %></p>
@@ -9,3 +11,6 @@
     <a href="/home">Home</a> |  <a href="/logout">Log Out</a>  |  <a href="/posts">See Your Posts</a>  |  <a href="/posts/new">Create New Post</a>  |  <a href="/friends-posts">See Friends' Posts</a>
 </div>
   
+
+  
+
